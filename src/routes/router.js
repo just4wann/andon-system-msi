@@ -8,6 +8,5 @@ export class Router {
 
     setupRouter() {
         this.app.get('/', this.controller.homePage);
-        this.app.get('/api/getTime', this.controller.getTime);
     }
 }
