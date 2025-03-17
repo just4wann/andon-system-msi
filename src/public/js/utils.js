@@ -19,15 +19,8 @@ export class Utils {
     const websocket = new WebSocket(`ws://${hostname}:${port}`);
 
     websocket.addEventListener('message', (message) => {
-      if (this.payloadConnectionType.includes(message.data)) {
-        if (message.data == 'disconnected' || message.data == 'error') {
-          this.tcpErrorElement.classList.remove("none");
-        }
-        else if (message.data == 'connected') {
-          this.tcpErrorElement.classList.add("none");
-        }
-        return;
-      }
+      if (this.payloadConnectionType.includes(message.data))
+        return message.data === 'connected' ? this.tcpErrorElement.classList.add("none") : this.tcpErrorElement.classList.remove("none");
 
       const data = JSON.parse(message.data)
 
