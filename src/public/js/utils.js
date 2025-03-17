@@ -11,33 +11,32 @@ export class Utils {
 
     this.serverErrorElement = document.querySelector('.server');
     this.tcpErrorElement = document.querySelector('.tcp');
+
+    this.payloadConnectionType = ["connected", "disconnected", "error"];
   }
 
   websocketListenerStart(hostname, port) {
     const websocket = new WebSocket(`ws://${hostname}:${port}`);
 
     websocket.addEventListener('message', (message) => {
-      const payload = JSON.parse(message.data);
-      const data = JSON.parse(payload.payload);
-
-      if (data === true) {
-        if (payload.item == 'disconnected' || payload.item == 'error') {
+      if (this.payloadConnectionType.includes(message.data)) {
+        if (message.data == 'disconnected' || message.data == 'error') {
           this.tcpErrorElement.classList.remove("none");
         }
-        else if (payload.item == 'connected') {
+        else if (message.data == 'connected') {
           this.tcpErrorElement.classList.add("none");
         }
         return;
       }
-      
+
+      const data = JSON.parse(message.data)
+
       this.specElement.innerHTML = data.specs;
       this.nextElement.innerHTML = data.next;
       this.rubberElement.innerHTML = data.rubber;
       this.colorElement.style.backgroundColor = data.colorSpec;
       this.planElement.innerHTML = data.plan;
       this.resultElement.innerHTML = data.result;
-
-      
     });
   }
 
@@ -47,13 +46,8 @@ export class Utils {
     });
   }
 
-  async dateAndTime() {
-    const response = await fetch('http://192.168.100.98:3000/api/getTime', {
-      method: 'GET',
-    });
-    const { time, date } = await response.json();
-    const [ hour, minute ] = time.split('.');
-    this.timeElement.innerHTML = `${hour}.${minute}`;
-    this.dateElement.innerHTML = date;
+  getTime() {
+    this.timeElement.innerHTML = new Date().toLocaleTimeString('id-ID', { hour12: false });
+    this.dateElement.innerHTML = new Date().toLocaleDateString('id-ID');
   }
 }

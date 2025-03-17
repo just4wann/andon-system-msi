@@ -3,13 +3,12 @@ import { Utils } from './utils.js';
 const utils = new Utils();
 
 const port = 8001;
-const ip = '192.168.100.98';
+const ip = '192.168.100.155';
 
 utils.onMounted(() => {
   utils.websocketListenerStart(ip, port);
-  utils.dateAndTime();
 });
 
 setInterval(() => {
-  utils.dateAndTime();
-}, 60000);
+  utils.getTime();
+}, 1000)
