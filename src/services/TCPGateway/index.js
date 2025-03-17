@@ -32,31 +32,19 @@ export class TCPGateway extends EventEmitter {
     }
 
     onConnect() {
-        this.ws.sendPayload({
-            item: 'connected',
-            payload: true
-        })
+        this.ws.sendPayload('connected')
     }
 
     onData(data) {
-        this.ws.sendPayload({
-            item: 'data',
-            payload: data.toString()
-        })
+        this.ws.sendPayload(data.toString())
     }
 
     onClose() {
-        this.ws.sendPayload({
-            item: 'disconnected',
-            payload: true
-        })
+        this.ws.sendPayload('disconnected')
         this.reconnect();
     }
 
     onError(error) {
-        this.ws.sendPayload({
-            item: 'error',
-            payload: true
-        })
+        this.ws.sendPayload('error')
     }
 }

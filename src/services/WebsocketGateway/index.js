@@ -19,7 +19,7 @@ export class WebsocketGateway {
         this.clients.forEach(client => {
             if (client.readyState === WebSocket.OPEN) {
                 if (client != null) {
-                    client.send(JSON.stringify(payload));
+                    client.send(payload);
                 }
             }
         })
