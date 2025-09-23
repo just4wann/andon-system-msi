@@ -7,6 +7,7 @@ import { Router } from '../routes/router.js';
 import { TCPGateway } from '../services/TCPGateway/index.js';
 import { WebsocketGateway } from '../services/WebsocketGateway/index.js';
 import { getIPAddress } from '../utils/index.js';
+import { ModbusGateway } from '../services/ModbusGateway/index.js';
 
 export class Server {
   constructor() {
@@ -15,16 +16,18 @@ export class Server {
     this.__dirname = path.dirname(this.__filename);
 
     this.port = 80;
-    this.ip = getIPAddress();
+    this.ip = '127.0.0.1';
     this.router = new Router(this.app);
-    this.websocket = new WebsocketGateway(8001);
-    this.tcp = new TCPGateway(this.websocket);
+    this.websocket = new WebsocketGateway(8001, 'localhost');
+    this.tcpServer = new TCPGateway(this.websocket);
+    this.modbus = new ModbusGateway(this.websocket);
   }
 
   serviceOpen() {
     this.websocket.createServer();
-    this.tcp.connect(8000);
+    this.tcpServer.listen(5000);
     this.router.setupRouter();
+    // this.modbus.connect('127.0.0.1', 502);
   }
 
   setCorsConfig() {
@@ -46,5 +49,10 @@ export class Server {
     this.app.listen(this.port, this.ip, () => {
       console.log(`server listen on ${this.ip}:${this.port}`);
     });
+
+    // setInterval(async () => {
+    //   const data = await this.modbus.readHoldingRegister(0, 2);
+    //   console.log(data)
+    // }, 3000);
   }
 }

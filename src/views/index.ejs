@@ -1,60 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Andon System</title>
-    <link rel="stylesheet" href="/css/index.css">
-</head>
-<body>
+    <link rel="stylesheet" href="/css/index.css" />
+  </head>
+  <body>
     <main class="container">
-        <section class="header-wrapper">
-            <h1 class="title">EXTRUDING PLAN</h1>
-            <div class="date-wrapper">
-                <h1 class="date">01/01/1999</h1>
-                <h1 class="time">00.00</h1>
+      <section class="flex-col text text-large">
+        <h1>SPEC</h1>
+        <h1>NEXT</h1>
+        <h1>RUBBER</h1>
+        <h1>COLOR</h1>
+        <h1>PLAN</h1>
+      </section>
+      <section class="flex-col text-large">
+        <div class="highlight-content-large">
+          <h1 class="spec">255/45R20V XL 04W330</h1>
+        </div>
+        <div class="highlight-content-large">
+          <h1 class="next">255/45R20V XL 04W330</h1>
+        </div>
+        <div class="highlight-content-large">
+          <h1 class="rubber">P82 / U36 / S25 / U35</h1>
+        </div>
+        <div class="flex-row content-2">
+          <div class="flex-col">
+            <div class="box-color color-spec"></div>
+            <div class="highlight-content">
+              <h1 class="plan">2</h1>
             </div>
-        </section>
-        <section class="sub-container">
-            <section class="main-wrapper">
-                <div class="spec-wrapper">
-                    <h1 class="spec-title">CURRENT SPECIFICATION</h1>
-                    <h1 class="spec">265/65R17H 04RA43 LB</h1>
+          </div>
+          <div class="flex-row content">
+            <div class="flex-col text text-large">
+                <h1>LINE</h1>
+                <h1>RESULT</h1>
+            </div>
+            <div class="flex-col text-large">
+                <div class="box-status status"></div>
+                <div class="highlight-content w-full">
+                  <h1 class="result">2</h1>
                 </div>
-                <div class="next-wrapper">
-                    <h1 class="next-title">NEXT SPECIFICATION</h1>
-                    <h1 class="next">265/65R17H 04RA43 LB</h1>
-                </div>
-                <div class="rubber-wrapper">
-                    <h1 class="rubber-title">RUBBER SPECIFICATION</h1>
-                    <h1 class="rubber">265/65R17H 04RA43 LB</h1>
-                </div>
-            </section>
-            <section class="secondary-wrapper">
-                <div class="color-wrapper">
-                    <h1 class="color-title">COLOR SPECIFICATION</h1>
-                    <div class="color-spec"></div>
-                </div>
-                <div class="inner-wrapper">
-                    <div class="plan-wrapper">
-                        <h1 class="plan-title">PLAN</h1>
-                        <h1 class="plan">1</h1>
-                    </div>
-                    <div class="result-wrapper">
-                        <h1 class="result-title">RESULT</h1>
-                        <h1 class="result">0</h1>
-                    </div>
-                </div>
-                
-            </section>
-        </section>
+            </div>
+          </div>
+        </div>
+      </section>
 
-        <section class="notification">
+      <section class="notification">
             <h4 class="server none">Server Loss Connection!</h4>
-            <h4 class="tcp none">TCP Connection Failed!</h4>
+            <h4 class="tcp">TCP Connection Failed!</h4>
         </section>
     </main>
 
     <script type="module" src="/js/index.js"></script>
-</body>
+  </body>
 </html>
