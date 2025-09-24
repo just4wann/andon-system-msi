@@ -53,7 +53,7 @@ body {
 .line-box {
   width: 14.5vw;
   height: 10vh;
-  background-color: yellow;
+  background-color: red;
   border: 0.3vw solid black;
 }
 
