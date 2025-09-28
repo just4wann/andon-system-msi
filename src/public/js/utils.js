@@ -1,40 +1,47 @@
 export class Utils {
   constructor() {
-    // this.timeElement = document.querySelector('.time');
-    // this.dateElement = document.querySelector('.date');
     this.specElement = document.querySelector('.spec');
     this.nextElement = document.querySelector('.next');
-    this.rubberElement = document.querySelector('.rubber');
     this.colorElement = document.querySelector('.color-spec');
     this.planElement = document.querySelector('.plan');
     this.resultElement = document.querySelector('.result');
     this.statusElement = document.querySelector('.status');
 
+    const parentElement = document.querySelector('.rubber');
+    this.rubbersElement = parentElement.querySelectorAll('span');
+
     this.serverErrorElement = document.querySelector('.server');
     this.tcpErrorElement = document.querySelector('.tcp');
 
-    this.payloadConnectionType = ["closed", "error"];
+    this.payloadConnectionType = ['closed', 'error'];
   }
 
   websocketListenerStart(hostname, port) {
     const websocket = new WebSocket(`ws://${hostname}:${port}`);
 
     websocket.addEventListener('message', async (message) => {
-      if (this.payloadConnectionType.includes(message.data))
-        return this.tcpErrorElement.classList.remove("none");
+      if (this.payloadConnectionType.includes(message.data)) return this.tcpErrorElement.classList.remove('none');
 
-      this.tcpErrorElement.classList.add("none");
+      this.tcpErrorElement.classList.add('none');
       const data = this.getParsingResult(message.data);
 
       this.specElement.innerHTML = data[0];
       this.nextElement.innerHTML = data[1];
-      this.rubberElement.innerHTML = data[2];
+
+      for (let i = 0; i < data[2].length; i++) {
+        if (!data[2][i].isMatch) {
+          this.rubbersElement[i].style.color = 'red';
+        } else {
+          this.rubbersElement[i].style.color = 'yellow';
+        }
+        this.rubbersElement[i].innerHTML = data[2][i].name;
+      }
+
       this.planElement.innerHTML = data[3];
       this.resultElement.innerHTML = data[4];
       this.colorElement.style.backgroundColor = data[5];
 
-      data[6] == '1' ?
-        this.statusElement.style.backgroundColor = 'yellow' : this.statusElement.style.backgroundColor = 'red'
+      data[6] === 1 ? (this.statusElement.style.backgroundColor = 'yellow') : (this.statusElement.style.backgroundColor = 'red');
     });
   }
 
@@ -44,88 +51,102 @@ export class Utils {
     });
   }
 
-  getTime() {
-    // this.timeElement.innerHTML = new Date().toLocaleTimeString('id-ID', { hour12: false });
-    // this.dateElement.innerHTML = new Date().toLocaleDateString('id-ID');
-  }
-
   getParsingResult(string) {
-    const remove = string.slice(4, string.length);
+    const remove = string.slice(7, string.length);
+
     const spec = this.getSpec(remove);
     const next = this.getNext(remove);
-    const rubber = this.getRubber(remove);
+    const rubber = this.getRubbers(remove);
     const { plan, result } = this.getPlanResult(remove);
-    const { hexColor, status } = this.getColorStatus(remove);
+    const color = this.getColor(remove);
+    const line = this.getStatusLine(remove);
 
-    return [ spec, next, rubber, plan, result, hexColor, status ];
+    return [spec, next, rubber, plan, result, color, line];
   }
 
   getSpec(arr) {
-    const spec = arr.split(" ");
-    let str1 = '';
-    let str2 = '';
-    for (let i = 1; i < spec[0].length; i++) {
-      str1 += spec[0][i]
-    }
-    str1 += '/'
-    for (let i = 0; i < spec[2].length; i++) {
-      if (spec[2][i] == '2') break;
-      str2 += spec[2][i];
-    }
-    const result = str1.concat(spec[1], str2);
+    const split = arr.split('/');
+    const getLastStr = split[1].slice(0, -4);
+    const result = split[0].concat('/', getLastStr);
     return result;
   }
 
   getNext(arr) {
-    const next = arr.split(" ");
-    let str1 = '';
-    let str2 = '';
-    for (let i = 3; i < next[2].length; i++) {
-      str1 += next[2][i]
-    }
-    str1 += '/'
-    for (let i = 0; i < next[4].length; i++) {
-      if (next[4][i] == '2') break;
-      str2 += next[4][i];
-    }
-    const result = str1.concat(next[3], str2);
+    const split = arr.split('/');
+    const getFirstStr = split[1].slice(-3);
+    const delLastStr = split[2].slice(0, -5);
+    const result = getFirstStr.concat('/', delLastStr);
     return result;
   }
 
-  getRubber(arr) {
-    const rubbStr = arr.split("2/2");
-    let temp = []
-    for (let i = rubbStr[0].length - 1; i > 0; i--) {
-      if (rubbStr[0][i] === '2' && temp.length === 3) break;
-      temp.unshift(rubbStr[0][i]);
+  getRubbers(arr) {
+    const split = arr.split('2/');
+    let arrTemp = [];
+    for (let i = split[0].length - 1; i > 0; i--) {
+      if (arrTemp.length == 4) break;
+      arrTemp.unshift(split[0][i]);
     }
-    const firstRubber = temp.join('')
-    rubbStr.shift();
-    let rubbers = [firstRubber];
-    for (let i = 0; i < rubbStr.length - 1; i++) {
-      rubbers.push(rubbStr[i]);
+    let result = [];
+    const firstRubber = arrTemp.join('');
+    const secondRubber = split[1];
+    const thirdRubber = split[2];
+    const fourthRubber = split[3];
+    const fifthRubber = split[4];
+
+    const listRubbers = [firstRubber, secondRubber, thirdRubber, fourthRubber, fifthRubber];
+    for (let i = 0; i < listRubbers.length; i++) {
+      if (listRubbers[i][0] === '1') {
+        result.push({
+          name: listRubbers[i].slice(1, listRubbers[i].length),
+          isMatch: false,
+        });
+      } else {
+        result.push({
+          name: listRubbers[i].slice(1, listRubbers[i].length),
+          isMatch: true,
+        });
+      }
     }
-    const rubber = rubbers.join(" / ");
-    return rubber;
+    return result;
   }
 
   getPlanResult(arr) {
-    const strArr = arr.split("2/2");
-    const trim = strArr[strArr.length - 1].replace(/\s+/g, "");
+    const strArr = arr.split('2/2');
+    const trim = strArr[strArr.length - 1].replace(/\s+/g, '');
     const plan = trim[0];
     const result = trim[2];
 
     return { plan, result };
   }
 
-  getColorStatus(arr) {
-    const split = arr.split('2/2');
-    const trim = split[split.length - 1].replace(/\s+/g, "");
-    let hexColor = '#';
-    for (let i = 5; i < trim.length - 3; i++) {
-      hexColor += trim[i].charCodeAt(0).toString(16);
+  getColor(arr) {
+    const split = arr.split('/');
+    const strLists = split[split.length - 1].slice(-13).slice(0, -1);
+    let colorStatuses = [];
+    for (let i = 0; i < 6; i++) {
+      if (strLists[i + (i + 1)] == ' ') {
+        colorStatuses.push(false);
+      } else {
+        colorStatuses.push(true);
+      }
     }
-    
-    return { hexColor, status: trim[4] }
+
+    let countNoColor = 0;
+    for (let i = 0; i < colorStatuses.length; i++) {
+      if (colorStatuses[i] === false) countNoColor++;
+    }
+    if (countNoColor === 6) return 'black';
+    if (colorStatuses[0]) return 'red';
+    if (colorStatuses[1]) return 'yellow';
+    if (colorStatuses[2]) return 'orange';
+    if (colorStatuses[3]) return 'blue';
+    if (colorStatuses[4]) return 'white';
+    if (colorStatuses[5]) return 'green';
+  }
+
+  getStatusLine(arr) {
+    const split = arr.split('/');
+    const str = split[split.length - 1].slice(0, -13).slice(-3);
+    return str[str.length - 1] === '2' ? 0 : 1;
   }
 }

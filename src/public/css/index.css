@@ -1,6 +1,6 @@
-/* style background dark */ 
+/* style background dark */
 
-body {
+/* body {
   margin: 0;
   background-color: black;
   font-family: 'Times New Roman', Times, serif, sans-serif;
@@ -78,6 +78,12 @@ body {
   border: 0.3vw solid black;
 }
 
+.rubber {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
 .notification {
   font-size: 2vw;
   position: absolute;
@@ -110,8 +116,7 @@ body {
   100% {
     opacity: 1;
   }
-}
-
+} */
 
 /* style background dark with border color yellow */
 /* body {
@@ -226,10 +231,9 @@ body {
   }
 } */
 
-
 /* style background color bright */
 
-/* body {
+body {
   margin: 0;
   background-color: aqua;
   font-family: 'Times New Roman', Times, serif, sans-serif;
@@ -308,6 +312,20 @@ body {
   border: 0.3vw solid black;
 }
 
+.rubber {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5vw;
+  height: 5.898vw;
+  border: 0.3vw solid black;
+  background-color: black;
+  color: yellow;
+  font-weight: bold;
+  text-align: center;
+  letter-spacing: 0.5vw;
+}
+
 .notification {
   font-size: 2vw;
   position: absolute;
@@ -340,4 +358,4 @@ body {
   100% {
     opacity: 1;
   }
-} */
+}

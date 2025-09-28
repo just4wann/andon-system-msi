@@ -24,18 +24,4 @@ export class WebsocketGateway {
             }
         })
     }
-
-    getPayload() {
-        let payload = '';
-        this.clients.forEach(client => {
-            if (client.readyState === WebSocket.OPEN) {
-                if (client != null) {
-                    client.on('message', (message) => {
-                        payload = message.toString();
-                    })
-                }
-            }
-        })
-        return payload;
-    }
 }

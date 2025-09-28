@@ -6,9 +6,9 @@ export class TCPGateway {
     this.ws = ws;
   }
 
-  listen(port) {
-    this.server.listen(port, () => {
-      console.log(`TCP Server Listen on Port ${port}`);
+  listen(port, host) {
+    this.server.listen(port, host, () => {
+      console.log(`TCP Server Listen on ${host}:${port}`);
     });
 
     this.server.on('connection', (socket) => {
