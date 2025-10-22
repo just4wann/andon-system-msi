@@ -20,7 +20,6 @@ export class Utils {
     const websocket = new WebSocket(`ws://${hostname}:${port}`);
 
     websocket.addEventListener('message', async (message) => {
-      console.log(message.data);
       if (this.payloadConnectionType.includes(message.data)) return this.tcpErrorElement.classList.remove('none');
 
       this.tcpErrorElement.classList.add('none');
@@ -53,10 +52,7 @@ export class Utils {
   }
 
   getParsingResult(string) {
-    const spl = string.split('/');
-    const take3char = spl[0].slice(-3);
-    spl.shift();
-    const remove = take3char.concat('/', spl.join('/'));
+    const remove = string.slice(7, string.length);
 
     const spec = this.getSpec(remove);
     const next = this.getNext(remove);

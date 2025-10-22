@@ -6,6 +6,7 @@ import { fileURLToPath } from 'url';
 import { Router } from '../routes/router.js';
 import { TCPGateway } from '../services/TCPGateway/index.js';
 import { WebsocketGateway } from '../services/WebsocketGateway/index.js';
+import { ModbusGateway } from '../services/ModbusGateway/index.js';
 
 export class Server {
   constructor() {
@@ -18,6 +19,7 @@ export class Server {
     this.router = new Router(this.app);
     this.websocket = new WebsocketGateway(8001, 'localhost');
     this.tcpServer = new TCPGateway(this.websocket);
+    this.modbus = new ModbusGateway(this.websocket);
   }
 
   serviceOpen() {

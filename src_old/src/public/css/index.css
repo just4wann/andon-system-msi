@@ -238,7 +238,7 @@ body {
   background-color: aqua;
   font-family: 'Times New Roman', Times, serif, sans-serif;
   color: black;
-  font-size: 5.9vw;
+  font-size: 4.8vw;
   overflow: hidden;
 }
 
@@ -263,10 +263,10 @@ body {
   border: 0.3vw solid black;
   background-color: black;
   color: yellow;
-  padding: 1vh 0.5vw;
+  padding: 2vh 1vw;
   font-weight: bold;
   text-align: center;
-  /* letter-spacing: 0.5vw; */
+  letter-spacing: 0.5vw;
 }
 
 .row-flex {
